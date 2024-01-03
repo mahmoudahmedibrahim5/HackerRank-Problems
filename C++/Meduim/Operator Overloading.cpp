@@ -8,7 +8,7 @@ class Matrix
 public:
     vector<vector<int>> a;
 
-    Matrix& operator+(Matrix& x){
+    Matrix operator+(Matrix& x){
         Matrix result;
         int rows = (int)x.a.size();
         int columns = (int)x.a[0].size();
