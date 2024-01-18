@@ -14,43 +14,29 @@ vector<string> split(const string &);
  *  1. INTEGER k
  *  2. INTEGER_ARRAY s
  */
-int k_global;
-vector<int> _set;
-
-int recursive(int index, vector<int> sub_set)
-{
-    if(index == (int)_set.size())
-        return (int)sub_set.size();
-
-    int choice1 = recursive(index + 1, sub_set);
-    int choice2 = 0;
-
-    bool choice2Validity = true;
-    for(int i = 0; i < (int)sub_set.size(); i++){
-        if( (sub_set[i] + _set[index])%k_global == 0){
-            choice2Validity = false;
-            break;
-        }
-    }
-    if(choice2Validity)
-    {
-        sub_set.push_back(_set[index]);
-        choice2 = recursive(index + 1, sub_set);
-    }
-    
-    if(choice1 > choice2)
-        return choice1;
-    else
-        return choice2;
-}
-
 int nonDivisibleSub_set(int k, vector<int> s) {
-    vector<int> sub_set;
-    for(int i = 0; i < (int)s.size(); i++){
-        _set.push_back(s[i]);
+    int n = s.size();
+    vector<int> count(k);
+    
+    for(int i = 0; i < n; i++)
+        count[s[i]%k]++;
+
+    int result;
+    if(count[0] == 0)
+        result = 0;
+    else
+        result = 1;
+    for(int i = 1; i < ((k+1)/2); i++)
+    {
+        if(count[i] > count[k-i])
+            result +=  count[i];
+        else
+            result += count[k-i];
     }
-    k_global = k;
-    return recursive(0, sub_set);;
+    if(k%2 == 0 && count[k/2] != 0)
+        result += 1;
+    
+    return result;
 }
 
 int main()
