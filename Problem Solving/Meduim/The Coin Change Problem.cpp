@@ -1,6 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -17,38 +15,30 @@ vector<string> split(const string &);
  *  2. LONG_INTEGER_ARRAY c
  */
 
-long recursive(int n, vector<long> c, int index){
-    if(n == 0){
-        return 1;
-    }
-    else if(index == 0){
-        if(n%c.at(index) == 0)
-            return 1;
-        else
-            return 0;
-    }
-    else{
-        long result = 0;
-        long count = (n / c.at(index)) + 1;
-        if(index == 1){
-            for(int i = 0; i < count; i++){
-                if((n-i*c.at(index))%c.at(0) == 0){
-                    result += 1;
-                }
-            }
+long getWays(int n, vector<long> c) {
+    vector<long> current(n + 1);
+    vector<long> prev(n + 1);
+    sort(c.begin(), c.end());
+    
+    prev[0] = 1;
+    for(int i = 1; i <= (int)c.size(); i++)
+    {
+        current[0] = 1;
+        for(int j = 1; j <= n; j++)
+        {
+            if(c[i-1] > j)
+                current[j] = prev[j];
+            else
+                current[j] = prev[j] + current[j-c[i-1]];
+            prev[j] = current[j];
         }
-        else{
-            for(int i = 0; i < count; i++){
-                result += recursive((n-i*c.at(index)), c, index - 1);
-            }
-        }
-        return result;
     }
+    return current[n];
 }
 
 int main()
 {
-    //ofstream fout(getenv("OUTPUT_PATH"));
+    ofstream fout(getenv("OUTPUT_PATH"));
 
     string first_multiple_input_temp;
     getline(cin, first_multiple_input_temp);
@@ -76,9 +66,9 @@ int main()
 
     long ways = getWays(n, c);
 
-    cout << ways << "\n";
+    fout << ways << "\n";
 
-    //fout.close();
+    fout.close();
 
     return 0;
 }
