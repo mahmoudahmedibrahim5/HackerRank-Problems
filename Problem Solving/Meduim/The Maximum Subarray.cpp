@@ -1,6 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -43,144 +41,29 @@ vector<int> maxSubarray(vector<int> arr) {
     }
 
     /* Calculate the values of the table and find the maximum one */
-    mem[0] = new int[1];
-    mem[0][0] = sum;
-    result[0] = sum;
-    for(int i = 1; i < n - 1; i++)
+    int subArraySum = 0;
+    result[0] = arr[0];
+    for(int i = 0; i < n; i++)
     {
-        mem[i] = new int[i + 1];
-        for(int j = 0; j <= i; j++)
-        {
-            if(i == j)
-            {
-                mem[i][j] = mem[i-1][j-1] - arr[i-1];
+        if(arr[i] < 0){
+            if(abs(arr[i]) > subArraySum)
+                subArraySum = 0;
+            else{
+                subArraySum += arr[i];
             }
-            else
-            {
-                mem[i][j] = mem[i-1][j] - arr[n - i + j];
-            }
-            if(mem[i][j] > result[0])
-                result[0] = mem[i][j];
         }
-        delete [] mem[i - 1];
+        else{
+            subArraySum += arr[i];
+        }
+        if(subArraySum > result[0])
+            result[0] = subArraySum;
     }
-    if(largest > result[0])
-        result[0] = largest;
-    delete [] mem[n - 1];
-    delete [] mem;
     return result;
-    // vector<int> result(2);
-    // int n = (int)arr.size();    // The length of the array
-    // int** mem = new int*[n];    // Table for the results of subarrays
-    
-    // int sum = 0;                // sum of all elements in the array
-    // int largest = arr[0];       // largest element in the array
-    // for(int i = 0; i < n; i++){
-    //     sum += arr[i];
-    //     if(arr[i] > 0){
-    //         result[1] += arr[i];
-    //     }
-    //     else{
-    //         /* In case all elements of the array are negative numbers */
-    //         if(arr[i] > largest)
-    //             largest = arr[i];
-    //     }
-    // }
-    // /* In case all elements of the array are negative numbers */
-    // if(result[1] == 0){
-    //     result[1] = largest;
-    //     result[0] = largest;
-    //     return result;
-    // }else if(result[1] == sum){
-    //     result[0] = sum;
-    //     return result;
-    // }
-
-    // /* Calculate the values of the table and find the maximum one */
-    // mem[0] = new int[1];
-    // mem[0][0] = sum;
-    // result[0] = sum;
-    // for(int i = 1; i < n; i++)
-    // {
-    //     mem[i] = new int[i + 1];
-    //     for(int j = 0; j <= i; j++)
-    //     {
-    //         if(i == j)
-    //         {
-    //             mem[i][j] = mem[i-1][j-1] - arr[i-1];
-    //         }
-    //         else
-    //         {
-    //             mem[i][j] = mem[i-1][j] - arr[n - i + j];
-    //         }
-    //         if(mem[i][j] > result[0])
-    //             result[0] = mem[i][j];
-    //     }
-    //     delete [] mem[i - 1];
-    // }
-    // delete [] mem[n - 1];
-    // delete [] mem;
-    // return result;
 }
-// vector<int> maxSubarray(vector<int> arr) {
-//     vector<int> result(2);
-//     int n = (int)arr.size();    // The length of the array
-//     int** mem = new int*[n];    // Table for the results of subarrays
-    
-//     result[0] = 0;
-//     if(arr[0] > 0)
-//         result[1] = arr[0];
-//     else
-//         result[1] = 0;
-    
-//     /* Calculate the values of the table and find the maximum one */
-//     mem[0] = new int[1];
-//     mem[0][0] = 0;
-    
-//     int sum = arr[0];                // sum of all elements in the array
-//     int largest = arr[0];           // largest element in the array
-//     for(int i = 1; i < n; i++)
-//     {
-//         sum += arr[i];
-//         if(arr[i] > 0){
-//             result[1] += arr[i];
-//         }
-//         else{
-//             if(arr[i] > largest)
-//                 largest = arr[i];
-//         }
-//         mem[i] = new int[i + 1];
-//         for(int j = 0; j <= i; j++)
-//         {
-//             if(i == j)
-//             {
-//                 mem[i][j] = mem[i-1][j-1] - arr[i-1];
-//             }
-//             else
-//             {
-//                 mem[i][j] = mem[i-1][j] - arr[n - i + j];
-//             }
-//             if(mem[i][j] > result[0])
-//                 result[0] = mem[i][j];
-//         }
-//         delete [] mem[i - 1];
-//     }
-//     delete [] mem[n - 1];
-//     delete [] mem;
-    
-//     result[0] += sum;
-    
-//     /* In case all elements of the array are negative numbers */
-//     if(result[1] == 0){
-//         result[1] = largest;
-//         result[0] = largest;
-//     }
-    
-//     return result;
-// }
+
 int main()
 {
-    //ofstream cout(getenv("OUTPUT_PATH"));
+    ofstream fout(getenv("OUTPUT_PATH"));
 
     string t_temp;
     getline(cin, t_temp);
@@ -209,17 +92,17 @@ int main()
         vector<int> result = maxSubarray(arr);
 
         for (size_t i = 0; i < result.size(); i++) {
-            cout << result[i];
+            fout << result[i];
 
             if (i != result.size() - 1) {
-                cout << " ";
+                fout << " ";
             }
         }
 
-        cout << "\n";
+        fout << "\n";
     }
 
-    //cout.close();
+    fout.close();
 
     return 0;
 }
