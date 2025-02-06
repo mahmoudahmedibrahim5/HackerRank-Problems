@@ -12,161 +12,32 @@ vector<string> split(const string &);
  * The function is expected to return an INTEGER.
  * The function accepts INTEGER_ARRAY arr as parameter.
  */
-
 int equal(vector<int> arr) {
     sort(arr.begin(), arr.end());
     
-    vector<int> copy1;
-    vector<int> copy2;
-    vector<int> copy3;
-    for(int i = 0; i < (int)arr.size(); i++){
-        copy1.push_back(arr[i]);
-        copy2.push_back(arr[i]);
-        copy3.push_back(arr[i]);
+    int result, diff;
+    int answer = 0x7FFFFFFF;
+    int min = arr[0];
+    for(int j = 0; j < 5; j++)
+    {
+        result = 0;
+        for(int i = 0; i < (int)arr.size(); i++)
+        {
+            if(arr[i] != min)
+            {
+                diff = arr[i] - min;
+                result += (diff / 5);
+                diff %= 5;
+                result += (diff / 2);
+                diff %= 2;
+                result += (diff / 1);
+            }
+        }
+        min--;
+        if(result < answer)
+            answer = result;
     }
-    
-    /* Criteria 1 */
-    unsigned long long incr = 0;
-    unsigned long long result1 = 0;
-    int diff;
-    for(int i = 0; i < (int)arr.size() - 1; i++)   
-    {
-        arr[i + 1] += incr;
-        if(arr[i] != arr[i + 1])
-        {
-            diff = arr[i + 1] - arr[i];
-            incr += diff;
-            result1 += (diff / 5);
-            diff %= 5;
-            if(diff == 4)
-            {
-                incr -= 4;
-                
-                // Make diff = 5
-                incr++;
-                arr[i + 1]++;
-                result1++;
-                
-                incr += 5;
-                result1++;
-            }
-            else
-            {
-                result1 += (diff / 2);
-                diff %= 2;
-                result1 += (diff / 1);
-                diff %= 1;
-            }
-        }
-    }   
-    
-    /* Criteria 2 */
-    unsigned long long result2 = 0;
-    incr = 0;
-    for(int i = 0; i < (int)copy1.size() - 1; i++)   
-    {
-        copy1[i + 1] += incr;
-        if(copy1[i] != copy1[i + 1])
-        {
-            diff = copy1[i + 1] - copy1[i];
-            incr += diff;
-            result2 += (diff / 5);
-            diff %= 5;
-            result2 += (diff / 2);
-            diff %= 2;
-            result2 += (diff / 1);
-            diff %= 1;
-        }
-    }
-    
-    /* Criteria 3 */
-    unsigned long long result3 = 0;
-    incr = 0;
-    for(int i = 0; i < (int)copy2.size() - 1; i++)   
-    {
-        copy2[i + 1] += incr;
-        if(copy2[i] != copy2[i + 1])
-        {
-            diff = copy2[i + 1] - copy2[i];
-            incr += diff;
-            result3 += (diff / 5);
-            diff %= 5;
-            if(diff == 3)
-            {
-                incr -= 3;
-                
-                // Make diff = 5
-                incr += 2;
-                copy2[i + 1] += 2;
-                result3++;
-                
-                incr += 5;
-                result3++;
-            }
-            else
-            {
-                result3 += (diff / 2);
-                diff %= 2;
-                result3 += (diff / 1);
-                diff %= 1;
-            }
-        }
-    }   
-    
-    /* Criteria 4 */
-    unsigned long long result4 = 0;
-    incr = 0;
-    for(int i = 0; i < (int)copy3.size() - 1; i++)   
-    {
-        copy3[i + 1] += incr;
-        if(copy3[i] != copy3[i + 1])
-        {
-            diff = copy3[i + 1] - copy3[i];
-            incr += diff;
-            result4 += (diff / 5);
-            diff %= 5;
-            if(diff == 4)
-            {
-                incr -= 4;
-                
-                // Make diff = 5
-                incr++;
-                copy3[i + 1]++;
-                result4++;
-                
-                incr += 5;
-                result4++;
-            }
-            else if(diff == 3)
-            {
-                incr -= 3;
-                
-                // Make diff = 5
-                incr += 2;
-                copy3[i + 1] += 2;
-                result4++;
-                
-                incr += 5;
-                result4++;
-            }
-            else
-            {
-                result4 += (diff / 2);
-                diff %= 2;
-                result4 += (diff / 1);
-                diff %= 1;
-            }
-        }
-    }   
-    unsigned long long result = result1;
-    if(result2 < result)
-        result = result2;
-    if(result3 < result)
-        result = result3;
-    if(result4 < result)
-        result = result4;
-        
-    return result;
+    return answer;
 }
 
 int main()
