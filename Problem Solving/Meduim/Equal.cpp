@@ -14,48 +14,164 @@ vector<string> split(const string &);
  */
 
 int equal(vector<int> arr) {
-    int result = 0;
-    int n = arr.size();
-    int diff = 0;
-    int index = 1;
     sort(arr.begin(), arr.end());
-    bool finished;
-    while(index != n - 1)
+    
+    vector<int> copy1;
+    vector<int> copy2;
+    vector<int> copy3;
+    for(int i = 0; i < (int)arr.size(); i++){
+        copy1.push_back(arr[i]);
+        copy2.push_back(arr[i]);
+        copy3.push_back(arr[i]);
+    }
+    
+    /* Criteria 1 */
+    unsigned long long incr = 0;
+    unsigned long long result1 = 0;
+    int diff;
+    for(int i = 0; i < (int)arr.size() - 1; i++)   
     {
-        finished = true;
-        for(int i = index; i < n; i++)
+        arr[i + 1] += incr;
+        if(arr[i] != arr[i + 1])
         {
-            if(arr[i] != arr[i - 1])
+            diff = arr[i + 1] - arr[i];
+            incr += diff;
+            result1 += (diff / 5);
+            diff %= 5;
+            if(diff == 4)
             {
-                diff = arr[i] - arr[i - 1];
-                index = i;
-                finished = false;
-                break;
+                incr -= 4;
+                
+                // Make diff = 5
+                incr++;
+                arr[i + 1]++;
+                result1++;
+                
+                incr += 5;
+                result1++;
+            }
+            else
+            {
+                result1 += (diff / 2);
+                diff %= 2;
+                result1 += (diff / 1);
+                diff %= 1;
             }
         }
-        if(finished)
-            break;
-        
-        int add = diff / 5;
-        add += (diff%5) / 2;
-        add += ((diff%5)%2);
-
-        result += add;
-        
-        for(int i = 0; i < n; i++)
+    }   
+    
+    /* Criteria 2 */
+    unsigned long long result2 = 0;
+    incr = 0;
+    for(int i = 0; i < (int)copy1.size() - 1; i++)   
+    {
+        copy1[i + 1] += incr;
+        if(copy1[i] != copy1[i + 1])
         {
-            arr[i] += diff;
+            diff = copy1[i + 1] - copy1[i];
+            incr += diff;
+            result2 += (diff / 5);
+            diff %= 5;
+            result2 += (diff / 2);
+            diff %= 2;
+            result2 += (diff / 1);
+            diff %= 1;
         }
-        arr[index] -= diff;
-        
     }
-
-    return result;
+    
+    /* Criteria 3 */
+    unsigned long long result3 = 0;
+    incr = 0;
+    for(int i = 0; i < (int)copy2.size() - 1; i++)   
+    {
+        copy2[i + 1] += incr;
+        if(copy2[i] != copy2[i + 1])
+        {
+            diff = copy2[i + 1] - copy2[i];
+            incr += diff;
+            result3 += (diff / 5);
+            diff %= 5;
+            if(diff == 3)
+            {
+                incr -= 3;
+                
+                // Make diff = 5
+                incr += 2;
+                copy2[i + 1] += 2;
+                result3++;
+                
+                incr += 5;
+                result3++;
+            }
+            else
+            {
+                result3 += (diff / 2);
+                diff %= 2;
+                result3 += (diff / 1);
+                diff %= 1;
+            }
+        }
+    }   
+    
+    /* Criteria 4 */
+    unsigned long long result4 = 0;
+    incr = 0;
+    for(int i = 0; i < (int)copy3.size() - 1; i++)   
+    {
+        copy3[i + 1] += incr;
+        if(copy3[i] != copy3[i + 1])
+        {
+            diff = copy3[i + 1] - copy3[i];
+            incr += diff;
+            result4 += (diff / 5);
+            diff %= 5;
+            if(diff == 4)
+            {
+                incr -= 4;
+                
+                // Make diff = 5
+                incr++;
+                copy3[i + 1]++;
+                result4++;
+                
+                incr += 5;
+                result4++;
+            }
+            else if(diff == 3)
+            {
+                incr -= 3;
+                
+                // Make diff = 5
+                incr += 2;
+                copy3[i + 1] += 2;
+                result4++;
+                
+                incr += 5;
+                result4++;
+            }
+            else
+            {
+                result4 += (diff / 2);
+                diff %= 2;
+                result4 += (diff / 1);
+                diff %= 1;
+            }
+        }
+    }   
+    unsigned long long result = result1;
+    if(result2 < result)
+        result = result2;
+    if(result3 < result)
+        result = result3;
+    if(result4 < result)
+        result = result4;
+        
+    return result4;
 }
 
 int main()
 {
-    //ofstream fout(getenv("OUTPUT_PATH"));
+    ofstream fout(getenv("OUTPUT_PATH"));
 
     string t_temp;
     getline(cin, t_temp);
@@ -83,10 +199,10 @@ int main()
 
         int result = equal(arr);
 
-        cout << result << "\n";
+        fout << result << "\n";
     }
 
-    //fout.close();
+    fout.close();
 
     return 0;
 }
