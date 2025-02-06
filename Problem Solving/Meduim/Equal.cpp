@@ -166,7 +166,7 @@ int equal(vector<int> arr) {
     if(result4 < result)
         result = result4;
         
-    return result4;
+    return result;
 }
 
 int main()
